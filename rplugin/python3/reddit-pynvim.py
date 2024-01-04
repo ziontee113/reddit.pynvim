@@ -1,14 +1,13 @@
 import pynvim
-from mynvim import MyNvim
-from split import Split
+from mypynvim import MyNvim
 
 
 @pynvim.plugin
 class RedditNvimPlugin(object):
     def __init__(self, nvim: pynvim.Nvim):
-        self.nvim = nvim
-        self.mynvim = MyNvim(nvim)
+        self.nvim = MyNvim(nvim)
 
     @pynvim.command("RedditPynvim")
     def reddit_pynvim(self):
-        split = Split(mynvim=self.mynvim, nvim=self.nvim)
+        split = self.nvim.split("v")
+        split.buf.append("Hello World!")
