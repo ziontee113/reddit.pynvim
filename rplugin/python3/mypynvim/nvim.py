@@ -3,8 +3,8 @@ from typing import Iterable, Any, Union, Optional
 import pynvim
 from split import Split
 
-from mypynvim.window import MyWindow
-from mypynvim.buffer import MyBuffer
+from .window import MyWindow
+from .buffer import MyBuffer
 
 
 class MyNvim(pynvim.Nvim):
@@ -37,15 +37,15 @@ class MyNvim(pynvim.Nvim):
     # window methods
 
     def win(self, winnr: int) -> MyWindow:
-        return MyWindow(self.nvim.windows[winnr])
+        return MyWindow(self, self.nvim.windows[winnr])
 
     def current_win(self) -> MyWindow:
-        return MyWindow(self.nvim.current.window)
+        return MyWindow(self, self.nvim.current.window)
 
     # buffer methods
 
     def buf(self, bufnr: int) -> MyBuffer:
-        return MyBuffer(self.nvim.buffers[bufnr])
+        return MyBuffer(self, self.nvim.buffers[bufnr])
 
     def current_buf(self) -> MyBuffer:
-        return MyBuffer(self.nvim.current.buffer)
+        return MyBuffer(self, self.nvim.current.buffer)
