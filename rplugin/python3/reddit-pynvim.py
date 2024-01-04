@@ -1,5 +1,5 @@
 import pynvim
-from mypynvim import MyNvim
+from mypynvim.nvim import MyNvim
 
 
 @pynvim.plugin

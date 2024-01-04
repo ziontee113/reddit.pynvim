@@ -1,24 +1,10 @@
 from typing import Iterable, Any, Union, Optional
 
 import pynvim
-from pynvim.api import Window, Buffer
 from split import Split
 
-
-class MyBuffer(Buffer):
-    def __init__(self, buffer: Buffer):
-        self.buf = buffer
-
-    def __getattr__(self, attr):
-        return getattr(self.buf, attr)
-
-
-class MyWindow(Window):
-    def __init__(self, window: Window):
-        self.win = window
-
-    def __getattr__(self, attr):
-        return getattr(self.win, attr)
+from mypynvim.window import MyWindow
+from mypynvim.buffer import MyBuffer
 
 
 class MyNvim(pynvim.Nvim):

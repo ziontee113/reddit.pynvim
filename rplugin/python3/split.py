@@ -3,9 +3,9 @@ from typing import Optional
 
 
 class Split:
-    import mypynvim
+    import mypynvim.nvim
 
-    def __init__(self, nvim: "mypynvim.MyNvim"):
+    def __init__(self, nvim: "mypynvim.nvim.MyNvim"):
         self.nvim = nvim
 
     def __call__(self, direction: str = "v", size: Optional[int] = None):
