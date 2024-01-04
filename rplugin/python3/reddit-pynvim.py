@@ -10,4 +10,4 @@ class RedditNvimPlugin(object):
     @pynvim.command("RedditPynvim")
     def reddit_pynvim(self):
         split = self.nvim.split("v")
-        split.buf.append("# Hello World!")
+        split.new_buffer("markdown")

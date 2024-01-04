@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import Optional
 
+from mypynvim.buffer import MyBuffer
+
 
 class Split:
     import mypynvim.nvim
@@ -18,4 +20,11 @@ class Split:
                 self.nvim.current.window.height = size
 
         self.buf = self.nvim.current_buf()
+        return self
+
+    def new_buffer(self, filetype: str = ""):
+        new_buffer = self.nvim.api.create_buf(False, True)
+        self.nvim.api.win_set_buf(self.nvim.current.window.handle, new_buffer)
+        self.buf = MyBuffer(self.nvim, new_buffer)
+        self.buf.set("filetype", filetype)
         return self
