@@ -10,9 +10,5 @@ class RedditNvimPlugin(object):
         self.mynvim = MyNvim(nvim)
 
     @pynvim.command("RedditPynvim")
-    def just_testing(self):
-        win = self.nvim.current.window
-        buf = self.nvim.current.buffer
-
-        split = Split(mynvim=self.mynvim, nvim=self.nvim, win=win, buf=buf)
-        split.test_notify()
+    def reddit_pynvim(self):
+        split = Split(mynvim=self.mynvim, nvim=self.nvim)
