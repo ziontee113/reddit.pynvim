@@ -23,6 +23,8 @@ class RedditNvimPlugin(object):
         split = self.nvim.split("v")
         split.new_buffer("markdown")
 
+        split.buf.map("n", "q", "<cmd>RedditPynvimMapping subreddit_browser q<cr>")
+
         subreddit_name = "neovim"
         limit = 20
         time_filter = "week"
@@ -32,3 +34,8 @@ class RedditNvimPlugin(object):
 
         renderer = SubredditRenderer(self.nvim, split.buf, top_submissions)
         renderer.render()
+
+    @pynvim.command("RedditPynvimMapping", nargs="*")
+    def my_command(self, args: list[str]):
+        context, mapping = args
+        self.nvim.notify(f"Context: {context}, Mapping: {mapping}")

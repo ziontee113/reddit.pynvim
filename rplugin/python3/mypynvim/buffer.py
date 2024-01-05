@@ -17,3 +17,6 @@ class MyBuffer(Buffer):
 
     def set(self, option: str, value: Any):
         self.nvim.api.buf_set_option(self.buf.handle, option, value)
+
+    def map(self, mode: str, lhs: str, rhs: str):
+        self.nvim.api.buf_set_keymap(self.buf.handle, mode, lhs, rhs, {"noremap": True})

@@ -2,9 +2,7 @@ from typing import Iterable, Any, Union, Optional
 
 import pynvim
 
-from context_manager import ContextManager
 from .split import Split
-
 from .window import MyWindow
 from .buffer import MyBuffer
 
@@ -12,7 +10,6 @@ from .buffer import MyBuffer
 class MyNvim(pynvim.Nvim):
     def __init__(self, nvim: pynvim.Nvim):
         self.nvim = nvim
-        self.context = ContextManager(self)
 
     def __getattr__(self, attr):
         return getattr(self.nvim, attr)
