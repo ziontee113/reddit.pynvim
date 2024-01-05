@@ -5,11 +5,14 @@ import pynvim
 from .split import Split
 from .window import MyWindow
 from .buffer import MyBuffer
+from keymapper import Keymapper
 
 
 class MyNvim(pynvim.Nvim):
     def __init__(self, nvim: pynvim.Nvim):
         self.nvim = nvim
+        self.mapper = Keymapper(self)
+        self._mapping_command = "MyNvimMapping"
 
     def __getattr__(self, attr):
         return getattr(self.nvim, attr)

@@ -17,13 +17,23 @@ reddit = praw.Reddit(**os.environ)
 class RedditNvimPlugin(object):
     def __init__(self, nvim: pynvim.Nvim):
         self.nvim = MyNvim(nvim)
+        self.nvim._mapping_command = "RedditPynvimMapping"
 
     @pynvim.command("RedditPynvim")
     def reddit_pynvim(self):
         split = self.nvim.split("v")
         split.new_buffer("markdown")
 
-        split.buf.map("n", "q", "<cmd>RedditPynvimMapping subreddit_browser q<cr>")
+        split.buf.map(
+            "subreddit_browser",
+            "n",
+            "o",
+            lambda: (
+                self.nvim.notify("nobody"),
+                self.nvim.notify("but you"),
+            ),
+        )
+        split.buf.map("subreddit_browser", "n", "q", ":q<CR>")
 
         subreddit_name = "neovim"
         limit = 20
@@ -36,6 +46,10 @@ class RedditNvimPlugin(object):
         renderer.render()
 
     @pynvim.command("RedditPynvimMapping", nargs="*")
-    def my_command(self, args: list[str]):
-        context, mapping = args
-        self.nvim.notify(f"Context: {context}, Mapping: {mapping}")
+    def my_command(self, args):
+        if len(args) == 2:
+            context, mapping = args
+            self.nvim.mapper.execute(context, mapping)
+        if len(args) == 3:
+            context, mapping, bufnr = args
+            self.nvim.mapper.execute(context, mapping, bufnr)

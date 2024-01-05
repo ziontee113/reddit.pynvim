@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Union, Callable
 
 from pynvim.api import Buffer
 
@@ -18,5 +18,5 @@ class MyBuffer(Buffer):
     def set(self, option: str, value: Any):
         self.nvim.api.buf_set_option(self.buf.handle, option, value)
 
-    def map(self, mode: str, lhs: str, rhs: str):
-        self.nvim.api.buf_set_keymap(self.buf.handle, mode, lhs, rhs, {"noremap": True})
+    def map(self, context: str, mode: str, lhs: str, rhs: Union[str, Callable]):
+        self.nvim.mapper.buf_set(self.buf.handle, context, mode, lhs, rhs)
