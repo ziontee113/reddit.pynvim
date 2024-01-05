@@ -1,13 +1,14 @@
 from __future__ import annotations
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from mypynvim.buffer import MyBuffer
 
+if TYPE_CHECKING:
+    from .nvim import MyNvim
+
 
 class Split:
-    import mypynvim.nvim
-
-    def __init__(self, nvim: "mypynvim.nvim.MyNvim"):
+    def __init__(self, nvim: MyNvim):
         self.nvim = nvim
 
     def __call__(self, direction: str = "v", size: Optional[int] = None):

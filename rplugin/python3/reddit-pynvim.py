@@ -5,7 +5,7 @@ import praw
 
 import pynvim
 from mypynvim.nvim import MyNvim
-from subreddit import SubredditNvim
+from subreddit_instance import SubredditInstance
 
 # instantiate Reddit instance
 load_dotenv()
@@ -21,8 +21,8 @@ class RedditNvimPlugin(object):
 
     @pynvim.command("RedditPynvim", nargs="*")
     def reddit_pynvim(self, args):
-        subreddit_instance = SubredditNvim(reddit, self.nvim, *args)
-        subreddit_instance.run()
+        self.subreddit_instance = SubredditInstance(reddit, self.nvim, *args)
+        self.subreddit_instance.run()
 
         # split = self.nvim.split("v")
         # split.new_buffer("markdown")

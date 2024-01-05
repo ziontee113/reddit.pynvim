@@ -1,6 +1,9 @@
-from mypynvim.nvim import MyNvim
 from enum import Enum
+
 from praw import Reddit
+from mypynvim.nvim import MyNvim
+from mypynvim.split import Split
+from renderers import SubredditRenderer
 
 
 class TimeFilter(Enum):
@@ -20,7 +23,7 @@ class SortBy(Enum):
     RISING = "rising"
 
 
-class SubredditNvim:
+class SubredditInstance:
     def __init__(
         self,
         reddit: Reddit,
@@ -42,6 +45,7 @@ class SubredditNvim:
 
     def fetch(self):
         subreddit = self.reddit.subreddit(self.parameters["name"])
+
         sort_methods = {
             SortBy.HOT: subreddit.hot,
             SortBy.NEW: subreddit.new,
@@ -49,12 +53,19 @@ class SubredditNvim:
             SortBy.CONTROVERSIAL: subreddit.controversial,
             SortBy.TOP: subreddit.top,
         }
+
         sort_args = {"limit": self.parameters["limit"]}
         if self.parameters["sort_by"] in [SortBy.TOP, SortBy.CONTROVERSIAL]:
             sort_args["time_filter"] = self.parameters["time_filter"].value
+
         self.fetched_posts = sort_methods[self.parameters["sort_by"]](**sort_args)
 
     def run(self):
         self.fetch()
-        for post in self.fetched_posts:
-            self.nvim.notify(post.title)
+
+        split = Split(self.nvim)
+        split("v")
+        split.new_buffer("markdown")
+
+        renderer = SubredditRenderer(self.nvim, split.buf, self.fetched_posts)
+        renderer.render()
