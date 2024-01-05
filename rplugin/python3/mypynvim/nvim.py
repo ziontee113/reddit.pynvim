@@ -1,7 +1,7 @@
 from typing import Iterable, Any, Union, Optional
 
 import pynvim
-from split import Split
+from .split import Split
 
 from .window import MyWindow
 from .buffer import MyBuffer
