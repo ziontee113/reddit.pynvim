@@ -5,6 +5,7 @@ import praw
 
 import pynvim
 from mypynvim.nvim import MyNvim
+from renderers import SubredditRenderer
 
 # instantiate Reddit instance
 load_dotenv()
@@ -27,9 +28,7 @@ class RedditNvimPlugin(object):
         time_filter = "week"
 
         subreddit = reddit.subreddit(subreddit_name)
-        results = subreddit.top(limit=limit, time_filter=time_filter)
+        top_submissions = subreddit.top(limit=limit, time_filter=time_filter)
 
-        for submission in results:
-            split.buf.append(submission.title)
-            split.buf.append(submission.url)
-            split.buf.append("")
+        renderer = SubredditRenderer(self.nvim, split.buf, top_submissions)
+        renderer.render()
