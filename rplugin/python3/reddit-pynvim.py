@@ -24,30 +24,6 @@ class RedditNvimPlugin(object):
         self.subreddit_instance = SubredditInstance(reddit, self.nvim, *args)
         self.subreddit_instance.run()
 
-        # split = self.nvim.split("v")
-        # split.new_buffer("markdown")
-        #
-        # split.buf.map(
-        #     "subreddit_browser",
-        #     "n",
-        #     "o",
-        #     lambda: (
-        #         self.nvim.notify("nobody"),
-        #         self.nvim.notify("but you"),
-        #     ),
-        # )
-        # split.buf.map("subreddit_browser", "n", "q", ":q<CR>")
-        #
-        # subreddit_name = "neovim"
-        # limit = 20
-        # time_filter = "week"
-        #
-        # subreddit = reddit.subreddit(subreddit_name)
-        # top_submissions = subreddit.top(limit=limit, time_filter=time_filter)
-        #
-        # renderer = SubredditRenderer(self.nvim, split.buf, top_submissions)
-        # renderer.render()
-
     @pynvim.command("RedditPynvimMapping", nargs="*")
     def my_command(self, args):
         if len(args) == 2:

@@ -63,9 +63,18 @@ class SubredditInstance:
     def run(self):
         self.fetch()
 
-        split = Split(self.nvim)
-        split("v")
+        for buf in self.nvim.get_bufs():
+            try:
+                if buf.get_var("reddit_pynvim_context") == "subreddit":
+                    renderer = SubredditRenderer(self.nvim, buf, self.fetched_posts)
+                    renderer.render()
+                    return
+            except:
+                pass
+
+        split = Split(self.nvim)("v")
         split.new_buffer("markdown")
+        split.buf.set_var("reddit_pynvim_context", "subreddit")
 
         renderer = SubredditRenderer(self.nvim, split.buf, self.fetched_posts)
         renderer.render()

@@ -9,6 +9,7 @@ class SubredditRenderer:
         self.submissions = submissions
 
     def render(self):
+        self.buf.clear()
         for submission in self.submissions:
             self.buf.append(submission.title)
             self.buf.append(submission.url)

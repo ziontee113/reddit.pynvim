@@ -56,3 +56,6 @@ class MyNvim(pynvim.Nvim):
 
     def current_buf(self) -> MyBuffer:
         return MyBuffer(self, self.nvim.current.buffer)
+
+    def get_bufs(self) -> Iterable[MyBuffer]:
+        return (MyBuffer(self, buf) for buf in self.nvim.buffers)
