@@ -1,4 +1,4 @@
-from rplugin.python3.mypynvim.nvim import MyNvim
+from mypynvim.nvim import MyNvim
 from enum import Enum
 from praw import Reddit
 
@@ -25,18 +25,18 @@ class SubredditNvim:
         self,
         reddit: Reddit,
         nvim: MyNvim,
-        subreddit_name: str,
-        sort_by: str = "TOP",
-        time_filter: str = "WEEK",
+        subreddit_name: str = "neovim",
+        sort_by: str = "top",
+        time_filter: str = "week",
         limit: int = 25,
     ):
         self.reddit = reddit
         self.nvim = nvim
         self.parameters = {
             "name": subreddit_name,
-            "sort_by": SortBy[sort_by],
-            "time_filter": TimeFilter[time_filter],
-            "limit": limit,
+            "sort_by": SortBy(sort_by),
+            "time_filter": TimeFilter(time_filter),
+            "limit": int(limit),
         }
         self.fetched_posts = []
 
@@ -49,9 +49,12 @@ class SubredditNvim:
             SortBy.CONTROVERSIAL: subreddit.controversial,
             SortBy.TOP: subreddit.top,
         }
-        sort_args = {
-            "limit": self.parameters["limit"].get(),
-        }
+        sort_args = {"limit": self.parameters["limit"]}
         if self.parameters["sort_by"] in [SortBy.TOP, SortBy.CONTROVERSIAL]:
-            sort_args["time_filter"] = self.parameters["time_filter"].get()
+            sort_args["time_filter"] = self.parameters["time_filter"].value
         self.fetched_posts = sort_methods[self.parameters["sort_by"]](**sort_args)
+
+    def run(self):
+        self.fetch()
+        for post in self.fetched_posts:
+            self.nvim.notify(post.title)
