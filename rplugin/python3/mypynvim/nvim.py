@@ -34,6 +34,10 @@ class MyNvim(pynvim.Nvim):
     def split(self, direction: str = "v", size: Optional[int] = None) -> Split:
         return Split(self)(direction, size)
 
+    def move_cursor_to_previous_window(self):
+        codes = self.nvim.api.replace_termcodes("<C-w>p", True, True, True)
+        self.nvim.api.feedkeys(codes, "n", False)
+
     # window methods
 
     def win(self, winnr: int) -> MyWindow:

@@ -22,9 +22,11 @@ class Split:
         self.buf = self.nvim.current_buf()
         return self
 
-    def new_buffer(self, filetype: str = ""):
+    def new_buffer(self, filetype: str = "", restore_cursor: bool = False):
         new_buffer = self.nvim.api.create_buf(False, True)
         self.nvim.api.win_set_buf(self.nvim.current.window.handle, new_buffer)
         self.buf = MyBuffer(self.nvim, new_buffer)
         self.buf.set("filetype", filetype)
+        if restore_cursor:
+            self.nvim.move_cursor_to_previous_window()
         return self
