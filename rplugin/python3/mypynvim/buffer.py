@@ -29,3 +29,11 @@ class MyBuffer(Buffer):
 
     def clear(self):
         self.nvim.api.buf_set_lines(self.buf.handle, 0, -1, True, [])
+
+    def lines(self, start: int = 0, end: int = -1):
+        return self.nvim.api.buf_get_lines(self.buf.handle, start, end, False)
+
+    def set_lines(self, start: int, end: int, lines: Union[str, list[str]]):
+        if isinstance(lines, str):
+            lines = lines.split("\n")
+        self.nvim.api.buf_set_lines(self.buf.handle, start, end, False, lines)
